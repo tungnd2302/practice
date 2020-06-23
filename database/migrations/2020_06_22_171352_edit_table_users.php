@@ -14,9 +14,11 @@ class EditTableUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('birthday', 100)->nullable()->change();
-            $table->string('avatar', 100)->nullable()->change();
-            $table->string('email', 100)->nullable()->change();
+            $table->id();
+            $table->string('name', 100);
+            $table->int('enable');
+            $table->dateTime('created', 0);
+            $table->string('createdby', 100);
         });
     }
 

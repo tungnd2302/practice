@@ -1,0 +1,7 @@
+.c-no-border-radius{
+	border-radius: unset;
+}
+
+.c-no-border-left{
+	border-left: unset;
+}

@@ -32,6 +32,14 @@ Route::group(['prefix' => $prefixAdmin],function(){
 		// echo $controller;
 		Route::get('/', 		    				['as' => $controllerName             , 'uses' => $controller.'index']);
 	});
+
+	$prefix = 'role';
+    $controllerName = 'role';
+	Route::group(['prefix' => $prefix ,'namespace' => 'Backend', 'middleware' => 'auth'],function() use ($controllerName){
+		$controller = ucfirst($controllerName) . 'Controller@';
+		// echo $controller;
+		Route::get('/', 		    				['as' => $controllerName             , 'uses' => $controller.'index']);
+	});
 })
 
 ?>
