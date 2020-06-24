@@ -14,6 +14,7 @@
             <div class="card">
                 @include('admin.partials.card_title',['title' => 'Tạo mới chức vụ chức vụ','form' => false])
                 <div class="card-body x_filter">
+                    @include('admin.templates.error')
                     {!! Form::open(['route' => $controllerName."save" , 'class' => 'form-group']) !!}
                     {{ Form::hidden('id', $id) }}
                     <div class="form-group">

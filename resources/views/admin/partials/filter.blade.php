@@ -1,6 +1,6 @@
 @php
     use App\Helpers\Practice;
-    Practice::countStatus($status);
+    $showStatusButton = Practice::countStatus($status);
 @endphp
 <div class="card">
     <div class="card-header">
@@ -29,15 +29,7 @@
         </div>
 
         <div class="col-md-6 d-flex">
-            <a href="" class="btn btn-danger mr-1">
-                Toàn bộ <span class="badge badge-light">4</span>
-            </a>
-            <a href="" class="btn btn-primary mr-1">
-                Chưa kích hoạt <span class="badge badge-light">3</span>
-            </a>
-            <a href="" class="btn btn-primary mr-1">
-                Kích hoạt <span class="badge badge-light">1</span>
-            </a>
+            {!! $showStatusButton !!}
         </div>
       </div>
 

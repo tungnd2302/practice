@@ -19,20 +19,18 @@
 	    	if($options['task'] == 'get-all-items'){
 	    		return self::paginate(5);
             }
+        }
 
+        public function countItem($params = null, $options = null)
+        {
             if($options['task'] == 'count-status'){
-                $buttonChangeStatus = config('myapp.template.buttonChangeStatus');
-                $totalStatus = [];
-                $sumStatus  = 0;
-                foreach($buttonChangeStatus as $key => $value){
-                    $totalStatus[$key] = $this->where('status',$key)->count();
-                    $sumStatus += $totalStatus[$key];
-                }
-                // $totalStatus['çountStatus'] = $sumStatus;
-
-                return $totalStatus;
+                $statusGroup = $this->select(self::raw('count(status) as count,status'))
+                                    ->groupBy('status')
+                                    ->get()->toArray();
+                return $statusGroup;
             }
         }
+        //->select(DB::raw('count(*) as user_count, status'))
 
         public function saveItem($params = null, $options = null)
         {
@@ -53,6 +51,12 @@
         public function getItem($params = null, $options = null){
             if($options['task'] == 'get-item'){
                 return $this->where('id',$params['id'])->first()->toArray();
+            }
+        }
+
+        public function deteleItem($params = null, $options = null){
+            if($options['task'] == 'delete-item'){
+                $this->where('id',$params['id'])->delete();
             }
         }
 

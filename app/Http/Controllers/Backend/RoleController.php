@@ -11,9 +11,11 @@ class RoleController extends BaseController
 {
     private $pathView = 'admin.pages.role';
     private $controllerName = 'role';
+    private $model;
 
     public function __construct()
     {
+        $this->model = new Role();
         view()->share(['controllerName' => $this->controllerName ]);
     }
 
@@ -21,7 +23,7 @@ class RoleController extends BaseController
     {
     	$model  = new Role();
         $items  = $model->getAllItems(null,['task' => 'get-all-items']);
-        $status = $model->getAllItems(null,['task' => 'count-status']);
+        $status = $model->countItem(null,['task' => 'count-status']);
         return view($this->pathView . '.index',[
             'items' => $items,
             'status' => $status
@@ -43,15 +45,15 @@ class RoleController extends BaseController
             $params['id'] = $request->id;
             $params['name'] = $request->name;
             $params['status'] = $request->status;
-            $model = new Role();
-            $items = $model->saveItem($params,['task' => 'update-item']);
+            $items = $this->model->saveItem($params,['task' => 'update-item']);
+            $notify = "Cập nhật phần tử thành công!";
         }else{
             $params['name'] = $request->name;
             $params['status'] = $request->status;
-            $model = new Role();
-            $items = $model->saveItem($params,['task' => 'save-item']);
+            $items = $this->model->saveItem($params,['task' => 'save-item']);
+            $notify = "Tạo phần tử thành công!";
         }
-        return redirect()->route($this->controllerName);
+        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
     public function changestatus(Request $request){
@@ -59,9 +61,17 @@ class RoleController extends BaseController
         $id = $request->id;
         $params['id']     = $id;
         $params['status'] = ($status == 0) ? 1 : 0;
-        $model = new Role();
-        $items = $model->saveItem($params,['task' => 'update-item']);
-        return redirect()->route($this->controllerName);
+        $items = $this->model->saveItem($params,['task' => 'update-item']);
+        $notify = "Chuyển trạng thái thành công!";
+        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
+    }
+
+    public function delete(Request $request){
+        $id = $request->id;
+        $params['id']     = $id;
+        $items = $this->model->deteleItem($params,['task' => 'delete-item']);
+        $notify = "Xóa phần tử thành công!";
+        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
 

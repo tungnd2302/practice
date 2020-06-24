@@ -28,14 +28,27 @@
         }
 
         public static function countStatus($status){
-           $buttonActionTemplates = config('myapp.template.buttonChangeStatus');
-           $buttonActionTemplates = array_flip($buttonActionTemplates);
-           foreach ($status as $key => $value) {
-               $myButton = array_key_exists($key,$buttonActionTemplates) ? $buttonActionTemplates[$key] : $buttonActionTemplates[2];
-           }
-           echo '<pre>';
-           print_r($status);
-           echo '<pre>';
+          $xhtml = '';
+          $buttonTemplates = config('myapp.template.buttonChangeStatus');
+          $totalCount = 0;
+          foreach ($status as $item) {
+              $status = array_key_exists($item['status'], $buttonTemplates) ? $buttonTemplates[$item['status']] : $buttonTemplates[2];
+              $xhtml .= sprintf('<a href="" class="btn %s mr-1">
+                                    %s <span class="badge badge-light">%s</span>
+                                 </a>',$status['class'],$status['name'],$item['count']);
+              $totalCount += $item['count']; 
+          }
+          $xhtml .= sprintf('<a href="" class="btn %s mr-1">
+                                    %s <span class="badge badge-light">%s</span>
+                                 </a>','btn-info','Tất cả',$totalCount);
+          return $xhtml;
+           // die;
+           // foreach ($status as $key => $value) {
+           //     $myButton = array_key_exists($key,$buttonActionTemplates) ? $buttonActionTemplates[$key] : $buttonActionTemplates[2];
+           // }
+
+            
+
         }
 
 
