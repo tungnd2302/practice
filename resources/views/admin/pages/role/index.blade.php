@@ -1,82 +1,55 @@
 @extends('admin.main')
 @section('content')
+@php
+    use App\Helpers\Practice;
+@endphp
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @include('admin.partials.title', ['title' => 'Chức vụ'])
-
-
     <section class="content">
       <div class="container-fluid">
+            @include('admin.partials.filter')
             <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">Phân loại</h3>
-
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                      <i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                      <i class="fas fa-times"></i></button>
-                  </div>
-                </div>
+                @include('admin.partials.card_title',['title' => 'Danh sách chức vụ','form' => true])
                 <div class="card-body x_filter">
                   <div class="row">
-                    <div class="col-md-4 d-flex">
-                      <div class="dropdown">
-                        <button type="button" class="btn btn-default dropdown-toggle c-no-border-radius" data-toggle="dropdown">
-                          Tìm kiếm
-                        </button>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">Link 1</a>
-                          <a class="dropdown-item" href="#">Link 2</a>
-                          <a class="dropdown-item" href="#">Link 3</a>
-                        </div>
-                      </div>
-                      <input type="text" name="search" class="form-control c-no-border-radius c-no-border-left">
-                    </div>
-
-                    <div class="col-md-6 d-flex">
-                        <a href="" class="btn btn-danger mr-1">
-                            Toàn bộ <span class="badge badge-light">4</span>
-                        </a>
-                        <a href="" class="btn btn-primary mr-1">
-                            Chưa kích hoạt <span class="badge badge-light">3</span>
-                        </a>
-                        <a href="" class="btn btn-primary mr-1">
-                            Kích hoạt <span class="badge badge-light">1</span>
-                        </a>
-                    </div>
-                  </div>
-
-
-                </div>
-                <!-- /.card-body -->
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">Danh sách chức vụ</h3>
-
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                      <i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                      <i class="fas fa-times"></i></button>
-                  </div>
-                </div>
-                <div class="card-body x_filter">
-                  <div class="row">
-                    <div class="col-md-12 d-flex">
+                    <div class="col-md-12">
                       <table class="table table-striped">
-                          <thead>
-                              <tr>
-                                <td>#</td>
-                                <td>Tên chức vụ</td>
-                                <td>Trạng thái</td>
-                                <td>Ngày tạo</td>
-                                <td>Thao tác</td>
-                              </tr>
-                          </thead>
-                      </table>
+                            <thead>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Tên chức vụ</td>
+                                    <td>Ngày tạo</td>
+                                    <td>Trạng thái</td>
+                                    <td>Thao tác</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(count($items) < 1)
+                                    <tr>
+                                        <td colspan="5" class="text-bold">Không có dữ liệu</td>
+                                    </tr>
+                                @else
+                                    @foreach ($items as $item)
+                                        @php
+
+                                            $name = $item['name'];
+                                            $buttonChangeStatus = Practice::ShowStatusButton($controllerName,$item['status'],$item['id']);
+                                            $buttonAction       = Practice::ShowActionButton($controllerName,$item['id']);
+                                            $created = $item['created'];
+                                        @endphp
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{ $name }}</td>
+                                            <td>{{ $created }}</td>
+                                            <td>{!! $buttonChangeStatus !!}</td>
+                                            <td>{!! $buttonAction !!}</td>
+                                        </tr>
+                                    @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                            {{ $items->links() }}
                     </div>
                   </div>
                 </div>
@@ -85,7 +58,7 @@
                 </div>
                 <!-- /.card-body -->
             </div>
-          
+
       </div>
     </section>
 
