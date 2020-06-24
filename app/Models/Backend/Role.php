@@ -13,20 +13,47 @@
         protected $fillable = [
             'name', 'status', 'createdby','created_at','update_at'
         ];
+        private $fieldSearchAccepted = ['id','name'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
-	    	if($options['task'] == 'get-all-items'){
-	    		return self::paginate(5);
+            if($options['task'] == 'get-all-items'){
+                $query = $this->select('name','id','status','created');
+                if($params['status'] !== null){
+                    $query->where('status',$params['status']);
+                }
+
+                if($params['fieldSearch'] !== ''){
+                    if($params['fieldSearch'] == 'all'){
+                        $query->where(function($query) use ($params){
+                            foreach($this->fieldSearchAccepted as $column){
+                                $query->orWhere($column, 'LIKE',  "%{$params['contentSearch']}%" );
+                            }
+                        });
+                    }elseif(in_array($params['fieldSearch'], $this->fieldSearchAccepted)){
+                        $query->where($params['fieldSearch'], 'LIKE',  "%{$params['contentSearch']}%" );
+                    }
+                }
+                return $query->paginate(10);
             }
         }
 
         public function countItem($params = null, $options = null)
         {
             if($options['task'] == 'count-status'){
-                $statusGroup = $this->select(self::raw('count(status) as count,status'))
-                                    ->groupBy('status')
-                                    ->get()->toArray();
+                $query = $this->select(self::raw('count(status) as count,status'));
+                if($params['fieldSearch'] !== ''){
+                    if($params['fieldSearch'] == 'all'){
+                        $query->where(function($query) use ($params){
+                            foreach($this->fieldSearchAccepted as $column){
+                                $query->orWhere($column, 'LIKE',  "%{$params['contentSearch']}%" );
+                            }
+                        });
+                    }elseif(in_array($params['fieldSearch'], $this->fieldSearchAccepted)){
+                        $query->where($params['fieldSearch'], 'LIKE',  "%{$params['contentSearch']}%" );
+                    }
+                }
+                $statusGroup = $query->groupBy('status')->get()->toArray();
                 return $statusGroup;
             }
         }

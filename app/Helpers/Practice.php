@@ -27,28 +27,29 @@
             return $xhtml;
         }
 
-        public static function countStatus($status){
+        public static function countStatus($status,$controllerName,$params){
           $xhtml = '';
           $buttonTemplates = config('myapp.template.buttonChangeStatus');
           $totalCount = 0;
           foreach ($status as $item) {
               $status = array_key_exists($item['status'], $buttonTemplates) ? $buttonTemplates[$item['status']] : $buttonTemplates[2];
-              $xhtml .= sprintf('<a href="" class="btn %s mr-1">
+              $link   = '?status='.$item['status'];
+              if($params['fieldSearch']){
+                $link .= '&fieldSearch='.$params['fieldSearch'] .'&contentSearch='.$params['contentSearch'];
+              }
+              $xhtml .= sprintf('<a href="%s" class="btn %s mr-1">
                                     %s <span class="badge badge-light">%s</span>
-                                 </a>',$status['class'],$status['name'],$item['count']);
-              $totalCount += $item['count']; 
+                                 </a>',$link,$status['class'],$status['name'],$item['count']);
+              $totalCount += $item['count'];
           }
-          $xhtml .= sprintf('<a href="" class="btn %s mr-1">
+          $link = route($controllerName);
+          if($params['fieldSearch']){
+            $link .= '?fieldSearch='.$params['fieldSearch'] .'&contentSearch='.$params['contentSearch'];
+          }
+          $xhtml .= sprintf('<a href="%s" class="btn %s mr-1">
                                     %s <span class="badge badge-light">%s</span>
-                                 </a>','btn-info','Tất cả',$totalCount);
+                                 </a>',$link,'btn-info','Tất cả',$totalCount);
           return $xhtml;
-           // die;
-           // foreach ($status as $key => $value) {
-           //     $myButton = array_key_exists($key,$buttonActionTemplates) ? $buttonActionTemplates[$key] : $buttonActionTemplates[2];
-           // }
-
-            
-
         }
 
 

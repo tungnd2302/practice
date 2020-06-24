@@ -11,22 +11,31 @@ class RoleController extends BaseController
 {
     private $pathView = 'admin.pages.role';
     private $controllerName = 'role';
+    private $nameInVN       = 'Chức vụ';
     private $model;
 
     public function __construct()
     {
         $this->model = new Role();
-        view()->share(['controllerName' => $this->controllerName ]);
+        view()->share([
+            'controllerName' => $this->controllerName,
+            'nameInVN'       => $this->nameInVN
+        ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $params['status'] = $request->status;
+        $params['fieldSearch'] = $request->fieldSearch;
+        $params['contentSearch'] =  $request->contentSearch;
+
     	$model  = new Role();
-        $items  = $model->getAllItems(null,['task' => 'get-all-items']);
-        $status = $model->countItem(null,['task' => 'count-status']);
+        $items  = $model->getAllItems($params,['task' => 'get-all-items']);
+        $status = $model->countItem($params,['task' => 'count-status']);
         return view($this->pathView . '.index',[
             'items' => $items,
-            'status' => $status
+            'status' => $status,
+            'params' => $params,
         ]);
     }
 
@@ -46,12 +55,12 @@ class RoleController extends BaseController
             $params['name'] = $request->name;
             $params['status'] = $request->status;
             $items = $this->model->saveItem($params,['task' => 'update-item']);
-            $notify = "Cập nhật phần tử thành công!";
+            $notify = "Cập nhật ". $this->nameInVN." thành công!";
         }else{
             $params['name'] = $request->name;
             $params['status'] = $request->status;
             $items = $this->model->saveItem($params,['task' => 'save-item']);
-            $notify = "Tạo phần tử thành công!";
+            $notify = "Tạo ". $this->nameInVN." thành công!";
         }
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
@@ -62,15 +71,16 @@ class RoleController extends BaseController
         $params['id']     = $id;
         $params['status'] = ($status == 0) ? 1 : 0;
         $items = $this->model->saveItem($params,['task' => 'update-item']);
-        $notify = "Chuyển trạng thái thành công!";
-        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
+        $notify = "Chuyển trạng thái ". $this->nameInVN." thành công!";
+        // return redirect()->route($this->controllerName)->with("practice_notify", $notify);
+        return redirect()->back()->with("practice_notify", $notify);
     }
 
     public function delete(Request $request){
         $id = $request->id;
         $params['id']     = $id;
         $items = $this->model->deteleItem($params,['task' => 'delete-item']);
-        $notify = "Xóa phần tử thành công!";
+        $notify = "Xóa ". $this->nameInVN." thành công!";
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 

@@ -16,9 +16,23 @@ return [
             'unknow' => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem', 'action' => 'unknow' ],
         ],
         'buttonChangeStatus' => [
-           '1'  => ['name' => 'Kích hoạt','class' => 'btn-xs btn-success'],
-           '0'  => ['name' => 'Chưa kích hoạt','class' => 'btn-xs btn-primary'],
-           '2'  => ['name' => 'Không xác định','class' => 'btn-xs btn-danger'],
+           '1'  => ['name' => 'Kích hoạt','class' => 'btn-success'],
+           '0'  => ['name' => 'Chưa kích hoạt','class' => 'btn-primary'],
+           '2'  => ['name' => 'Không xác định','class' => 'btn-danger'],
+        ],
+        'searchField' => [
+            'all'      => 'Tìm kiếm tất cả',
+            'name'     => 'Tìm kiếm theo tên',
+            'id'       => 'Tìm kiếm theo ID',
+            'content'  => 'Tìm kiếm theo nội dung',
+            'question' => 'Tìm kiếm theo câu hỏi',
+            'username' => 'Tìm kiếm theo người dùng',
+            'role'     => 'Tìm kiếm theo chức vụ',
+            // 'role'     => 'Tìm kiếm theo tên',
+        ],
+        'search' => [
+            'role'   => ['all','id','name'],
+            'unknow' => ['id','name','role'],
         ]
     ]
 ];

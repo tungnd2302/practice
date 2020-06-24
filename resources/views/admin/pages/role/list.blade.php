@@ -40,7 +40,10 @@
                         @endif
                     </tbody>
             </table>
+            @if ($items->hasMorePages())
                 {{ $items->links() }}
+            @endif
+
         </div>
     </div>
 </div>

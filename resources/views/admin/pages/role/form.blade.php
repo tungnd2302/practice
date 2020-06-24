@@ -5,14 +5,16 @@
     $name     = (isset($items['name'])) ? $items['name'] : '';
     $id       = (isset($items['id'])) ? $items['id'] : '';
     $status   = (isset($items['status'])) ? $items['status'] : '';
+    $title    = (isset($items['id'])) ? "Chỉnh sửa" : "Tạo mới";
+
 @endphp
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('admin.partials.title', ['title' => 'Chức vụ'])
+    @include('admin.partials.title', ['title' => $nameInVN])
     <section class="content">
       <div class="container-fluid">
             <div class="card">
-                @include('admin.partials.card_title',['title' => 'Tạo mới chức vụ chức vụ','form' => false])
+                @include('admin.partials.card_title',['title' => $title . ' ' . $nameInVN,'form' => false])
                 <div class="card-body x_filter">
                     @include('admin.templates.error')
                     {!! Form::open(['route' => $controllerName."save" , 'class' => 'form-group']) !!}
