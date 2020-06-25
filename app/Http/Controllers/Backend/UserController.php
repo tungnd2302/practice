@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Backend;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\Backend\User;
+use App\Models\Backend\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
-
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends BaseController
 {
@@ -40,11 +41,20 @@ class UserController extends BaseController
 
     public function form(Request $request){
         $items = [];
+        $roleModel = new Role();
+        $roles = $roleModel->findItem(null,['task' => 'get-items-active']);
         if($request->id){
             $params['id'] = $request->id;
             $items = $this->model->getItem($params,['task' => 'get-item']);
         }
-        return view($this->pathView . '.form',['items' => $items]);
+        // echo '<pre>';
+        // print_r($items);
+        // echo '<pre>';
+        // die;
+        return view($this->pathView . '.form',[
+            'items' => $items,
+            'roles' => $roles
+        ]);
     }
 
     public function save(UserRequest $request){
@@ -53,9 +63,10 @@ class UserController extends BaseController
         // echo '</pre>';
         // die;
         if($request->id){
-            $params['id'] = $request->id;
-            $params['username'] = $request->username;
-            $params['status'] = $request->status;
+            $fields = $request->all();
+            foreach($fields as $key => $field){
+                $params[$key] = $field;
+            }
             $items = $this->model->saveItem($params,['task' => 'update-item']);
             $notify = "Cập nhật ". $this->nameInVN." thành công!";
         }else{
@@ -80,11 +91,24 @@ class UserController extends BaseController
         return redirect()->back()->with("practice_notify", $notify);
     }
 
+    public function view(Request $request){
+        $params['id'] = $request->id;
+        $items = $this->model->getItem($params,['task' => 'get-item']);
+        return view($this->pathView . '.view',[
+            'items' => $items
+        ]);
+    }
+
     public function delete(Request $request){
         $id = $request->id;
-        $params['id']     = $id;
-        $items = $this->model->deteleItem($params,['task' => 'delete-item']);
-        $notify = "Xóa ". $this->nameInVN." thành công!";
+
+        if(Auth()->user()->id == $id){
+            $notify = "Không thể xóa nhân viên này";
+        }else{
+            $params['id']     = $id;
+            $items = $this->model->deteleItem($params,['task' => 'delete-item']);
+            $notify = "Xóa ". $this->nameInVN." thành công!";
+        }
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 

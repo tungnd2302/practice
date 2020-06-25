@@ -2,16 +2,17 @@
 @section('content')
 @php
     $arrayTemplate = config('myapp.template.buttonChangeStatus');
-    $id       = (isset($items['id'])) ? $items['id'] : '';
-    $username = (isset($items['username'])) ? $items['username'] : '';
-    $fullname = (isset($items['fullname'])) ? $items['fullname'] : '';
-    $status   = (isset($items['status'])) ? $items['status'] : '';
-    $title    = (isset($items['id'])) ? "Chỉnh sửa" : "Tạo mới";
+    $id       = (isset($items['user']['id'])) ? $items['user']['id'] : '';
+    $username = (isset($items['user']['username'])) ? $items['user']['username'] : '';
+    $fullname = (isset($items['user']['fullname'])) ? $items['user']['fullname'] : '';
+    $status   = (isset($items['user']['status'])) ? $items['user']['status'] : '';
+    $roleid   = (isset($items['user']['id'])) ? $items['user']['id'] : '';
+    $title    = (isset($items['user']['id'])) ? "Chỉnh sửa" : "Tạo mới";
 
 @endphp
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('admin.partials.title', ['title' => $nameInVN])
+    @include('admin.partials.title', ['title' => $nameInVN,'back' => true])
     <section class="content">
       <div class="container-fluid">
             <div class="card">
@@ -29,9 +30,15 @@
                         {!! Form::text('fullname',$fullname, ['class' => 'form-control'] ) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('Mật khẩu'); !!}
-                        {!! Form::password('password', ['class' => 'form-control'] ) !!}
+                        {!! Form::label('Chức vụ'); !!}
+                        {!! Form::select('roleid', $roles ,$roleid,['class' => 'form-control']); !!}
                     </div>
+                    @if ($id == '')
+                        <div class="form-group">
+                            {!! Form::label('Mật khẩu'); !!}
+                            {!! Form::password('password', ['class' => 'form-control'] ) !!}
+                        </div>
+                    @endif
                     <div class="form-group">
                         {!! Form::label('Trạng thái'); !!}
                         {!! Form::select('status', ['1' => $arrayTemplate[1]['name'], '0' => $arrayTemplate[0]['name']],$status,['class' => 'form-control']); !!}

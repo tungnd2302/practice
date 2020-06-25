@@ -55,6 +55,7 @@ Route::group(['prefix' => $prefixAdmin],function(){
         Route::post('/save', 		    	        ['as' => $controllerName . 'save'            , 'uses' => $controller.'save']);
         Route::get('/change-status-{status}/{id}', 	['as' => $controllerName . 'changestatus'    , 'uses' => $controller.'changestatus']);
         Route::get('/delete/{id}', 		    		['as' => $controllerName . 'delete'          , 'uses' => $controller.'delete']);
+        Route::get('/view', 		    	        ['as' => $controllerName . 'view'            , 'uses' => $controller.'view']);
 	});
 })
 

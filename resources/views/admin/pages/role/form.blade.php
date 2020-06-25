@@ -10,7 +10,7 @@
 @endphp
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('admin.partials.title', ['title' => $nameInVN])
+    @include('admin.partials.title', ['title' => $nameInVN,'back' => true])
     <section class="content">
       <div class="container-fluid">
             <div class="card">

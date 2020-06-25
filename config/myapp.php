@@ -6,15 +6,15 @@ return [
     ],
     'template' => [
         'button' => [
-            'role'   => ['form','delete'],
-            'user'   => ['form','delete'],
+            'role'   => ['form'],
+            'user'   => ['form','delete','view'],
             'unknow' => ['form','delete','view'],
         ],
         'buttonType' => [
-            'form'   => [ 'class' => 'btn-xs btn-success' , 'icon' => 'fa fa-pencil-alt', 'title' => 'Chỉnh sửa'],
-            'delete' => [ 'class' => 'btn-xs btn-primary', 'icon' => 'fa fa-trash' , 'title' => 'Xóa'],
-            'view'   => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
-            'unknow' => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
+            'form'   => [ 'class' => 'btn-success' , 'icon' => 'fa fa-pencil-alt', 'title' => 'Chỉnh sửa'],
+            'delete' => [ 'class' => 'btn-primary', 'icon' => 'fa fa-trash' , 'title' => 'Xóa'],
+            'view'   => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
+            'unknow' => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
         ],
         'buttonChangeStatus' => [
            '1'  => ['name' => 'Kích hoạt','class' => 'btn-success'],
@@ -34,7 +34,7 @@ return [
         ],
         'search' => [
             'role'   => ['all','id','name'],
-            'user'   => ['all','fullname','id'],
+            'user'   => ['all','fullname','id','username'],
             'unknow' => ['id','name','role'],
         ]
     ]

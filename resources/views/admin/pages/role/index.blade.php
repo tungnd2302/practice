@@ -2,7 +2,7 @@
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('admin.partials.title', ['title' => 'Chức vụ'])
+    @include('admin.partials.title', ['title' => 'Chức vụ','back' => false])
     <section class="content">
       <div class="container-fluid">
             @include('admin.partials.filter')

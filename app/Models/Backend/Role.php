@@ -14,6 +14,7 @@
             'name', 'status', 'createdby','created_at','update_at'
         ];
         private $fieldSearchAccepted = ['id','name'];
+        private $fieldSaveNotAccepted = ['_token'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
@@ -63,12 +64,22 @@
         {
             if($options['task'] == 'save-item'){
                date_default_timezone_set("Asia/Bangkok");
-               $params['created'] = date('Y-m-d H:i:s',time());
-               $params['createdby'] = Auth::user()->fullname;
-               $this->insert($params);
+                foreach($params as $key => $item){
+                    if(in_array($key,$this->fieldSaveNotAccepted)){
+                        unset($params[$key]);
+                    }
+                }
+                $params['created'] = date('Y-m-d H:i:s',time());
+                $params['createdby'] = Auth::user()->fullname;
+                $this->insert($params);
             }
 
             if($options['task'] == 'update-item'){
+                foreach($params as $key => $item){
+                    if(in_array($key,$this->fieldSaveNotAccepted)){
+                        unset($params[$key]);
+                    }
+                }
                 $query = $this->where('id',$params['id']);
                 array_shift($params);
                 $query->update($params);
@@ -85,6 +96,19 @@
             if($options['task'] == 'delete-item'){
                 $this->where('id',$params['id'])->delete();
             }
+        }
+
+        public function findItem($params = null, $options = null){
+            if($options['task'] == 'get-items-active'){
+                return $this->select('id','name')
+                            ->where('status',1)->pluck('name','id')
+                            ->toArray();
+            }
+        }
+
+        public function Users()
+        {
+            return $this->hasMany('App\Models\Backend\Role\Usear','roleid','id');
         }
 
 	}

@@ -49,14 +49,17 @@ class RoleController extends BaseController
 
     public function save(RoleRequest $request){
         if($request->id){
-            $params['id'] = $request->id;
-            $params['name'] = $request->name;
-            $params['status'] = $request->status;
+            $fields = $request->all();
+            foreach($fields as $key => $field){
+                $params[$key] = $field;
+            }
             $items = $this->model->saveItem($params,['task' => 'update-item']);
             $notify = "Cập nhật ". $this->nameInVN." thành công!";
         }else{
-            $params['name'] = $request->name;
-            $params['status'] = $request->status;
+            $fields = $request->all();
+            foreach($fields as $key => $field){
+                $params[$key] = $field;
+            }
             $items = $this->model->saveItem($params,['task' => 'save-item']);
             $notify = "Tạo ". $this->nameInVN." thành công!";
         }
