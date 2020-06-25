@@ -8,6 +8,10 @@
     $paramContentField    = (isset($params['contentSearch'])) ? $params['contentSearch'] : '';
 
     $searchs = array_key_exists($controllerName,$controllerSeacrh) ? $controllerSeacrh[$controllerName] : $controllerSeacrh['unknow'] ;
+    // echo '<pre>';
+    // print_r($searchs);
+    // echo'</pre>';
+    // die;
 
 @endphp
 <div class="card">

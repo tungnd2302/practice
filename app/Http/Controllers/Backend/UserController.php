@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Backend;
 use Illuminate\Routing\Controller as BaseController;
-use App\Models\Backend\Role;
+use App\Models\Backend\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\UserRequest;
 
 
-class RoleController extends BaseController
+class UserController extends BaseController
 {
-    private $pathView = 'admin.pages.role';
-    private $controllerName = 'role';
-    private $nameInVN       = 'Chức vụ';
+    private $pathView = 'admin.pages.user';
+    private $controllerName = 'user';
+    private $nameInVN       = 'Người dùng';
     private $model;
 
     public function __construct()
     {
-        $this->model = new Role();
+        $this->model = new User();
         view()->share([
             'controllerName' => $this->controllerName,
             'nameInVN'       => $this->nameInVN
@@ -47,16 +47,22 @@ class RoleController extends BaseController
         return view($this->pathView . '.form',['items' => $items]);
     }
 
-    public function save(RoleRequest $request){
+    public function save(UserRequest $request){
+        // echo '<pre>';
+        // print_r($request->all());
+        // echo '</pre>';
+        // die;
         if($request->id){
             $params['id'] = $request->id;
-            $params['name'] = $request->name;
+            $params['username'] = $request->username;
             $params['status'] = $request->status;
             $items = $this->model->saveItem($params,['task' => 'update-item']);
             $notify = "Cập nhật ". $this->nameInVN." thành công!";
         }else{
-            $params['name'] = $request->name;
-            $params['status'] = $request->status;
+            $fields = $request->all();
+            foreach($fields as $key => $field){
+                $params[$key] = $field;
+            }
             $items = $this->model->saveItem($params,['task' => 'save-item']);
             $notify = "Tạo ". $this->nameInVN." thành công!";
         }

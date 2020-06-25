@@ -6,14 +6,15 @@ return [
     ],
     'template' => [
         'button' => [
-            'role'   => ['edit','delete'],
-            'unknow' => ['edit','delete','view'],
+            'role'   => ['form','delete'],
+            'user'   => ['form','delete'],
+            'unknow' => ['form','delete','view'],
         ],
         'buttonType' => [
-            'edit'   => [ 'class' => 'btn-xs btn-success' , 'icon' => 'fa fa-pencil-alt', 'title' => 'Chỉnh sửa', 'action' => 'form' ],
-            'delete' => [ 'class' => 'btn-xs btn-primary', 'icon' => 'fa fa-trash' , 'title' => 'Xóa', 'action' => 'delete' ],
-            'view'   => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem', 'action' => 'view' ],
-            'unknow' => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem', 'action' => 'unknow' ],
+            'form'   => [ 'class' => 'btn-xs btn-success' , 'icon' => 'fa fa-pencil-alt', 'title' => 'Chỉnh sửa'],
+            'delete' => [ 'class' => 'btn-xs btn-primary', 'icon' => 'fa fa-trash' , 'title' => 'Xóa'],
+            'view'   => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
+            'unknow' => [ 'class' => 'btn-xs btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
         ],
         'buttonChangeStatus' => [
            '1'  => ['name' => 'Kích hoạt','class' => 'btn-success'],
@@ -28,10 +29,12 @@ return [
             'question' => 'Tìm kiếm theo câu hỏi',
             'username' => 'Tìm kiếm theo người dùng',
             'role'     => 'Tìm kiếm theo chức vụ',
+            'fullname'     => 'Tìm kiếm theo họ tên',
             // 'role'     => 'Tìm kiếm theo tên',
         ],
         'search' => [
             'role'   => ['all','id','name'],
+            'user'   => ['all','fullname','id'],
             'unknow' => ['id','name','role'],
         ]
     ]

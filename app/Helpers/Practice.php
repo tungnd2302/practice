@@ -15,11 +15,10 @@
             $xhtml                 = '';
             $buttonActionTemplates = config('myapp.template.button');
             $myButton              = (array_key_exists($controllerName,$buttonActionTemplates)) ? $buttonActionTemplates[$controllerName] : $buttonActionTemplates['unknow'];
-
             $buttonTypeTemplate    = config('myapp.template.buttonType');
             foreach($myButton as $key => $value){
                 $actionButton = (array_key_exists($value,$buttonTypeTemplate)) ? $buttonTypeTemplate[$value] : $buttonTypeTemplate['unknow'];
-                $link   = route($controllerName . $actionButton['action'] , ['id' => $id]);
+                $link   = route($controllerName . $value , ['id' => $id]);
                 $xhtml .= sprintf('<a href="%s" class="btn %s btn-round ml-1 mr-1">
                                     <i class = "%s"></i>
                                   </a>',$link,$actionButton['class'],$actionButton['icon']);
