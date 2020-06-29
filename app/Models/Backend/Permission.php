@@ -6,15 +6,15 @@
 /**
 	 * summary
 	 */
-	class Role extends Model
+	class Permission extends Model
 	{
 	    public $timestamps = false;
-	    public $table 	   = 'role';
+	    public $table 	   = 'permission';
         protected $fillable = [
             'name', 'status', 'createdby','created_at','update_at'
         ];
         private $fieldSearchAccepted = ['id','name'];
-        private $fieldSaveNotAccepted = ['_token'];
+        private $fieldSaveNotAccepted = ['_token','action'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
@@ -89,9 +89,6 @@
         public function getItem($params = null, $options = null){
             if($options['task'] == 'get-item'){
                 return $this->where('id',$params['id'])->first()->toArray();
-            }
-            if($options['task'] == 'get-active-item'){
-                return $this->where('status',1)->get()->toArray();
             }
         }
 

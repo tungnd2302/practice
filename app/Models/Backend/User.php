@@ -29,7 +29,7 @@ class User extends Authenticatable
     public function getAllItems($params = null, $options = null)
 	    {
             if($options['task'] == 'get-all-items'){
-                $query = $this->select('fullname','users.id as id','users.status','users.created','username','name as rolename')
+                $query = $this->select('fullname','users.id as id','users.status','users.created','username','name as rolename','role.status as rolestatus')
                               ->leftjoin('role','users.roleid','=','role.id');
                 if($params['status'] !== null){
                     $query->where('users.status',$params['status']);
@@ -104,8 +104,15 @@ class User extends Authenticatable
                 // return self::find($params['id'])->first();
                 $items['info']['user'] =  self::find($params['id'])->where('id',$params['id'])->first()->toArray();
                 $roleid = $items['info']['user']['roleid'];
+                if($roleid < 0){
+                    return $items['info'];
+                }
                 $items['info']['role'] =  self::find($params['id'])->roles()->where('id',$roleid)->first()->toArray();
                 return $items['info'];
+            }
+
+            if($options['task'] == 'get-active-item'){
+                return $this->select('id','username')->where('status',1)->pluck('username', 'id')->toArray();
             }
             // return self::find($params['id'])->roles()->first();
         }

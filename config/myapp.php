@@ -8,12 +8,15 @@ return [
         'button' => [
             'role'   => ['form'],
             'user'   => ['form','delete','view'],
-            'unknow' => ['form','delete','view'],
+            'permission'   => ['form','delete','adddetail'],
+            'unknow' => ['form','delete'],
         ],
         'buttonType' => [
             'form'   => [ 'class' => 'btn-success' , 'icon' => 'fa fa-pencil-alt', 'title' => 'Chỉnh sửa'],
-            'delete' => [ 'class' => 'btn-primary', 'icon' => 'fa fa-trash' , 'title' => 'Xóa'],
+            'delete' => [ 'class' => 'btn-primary', 'icon'  => 'fa fa-trash' , 'title' => 'Xóa'],
             'view'   => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
+            'cog'    => [ 'class' => ' btn-warning' , 'icon'=> 'fa fa-user-cog'   , 'title' => 'Cài đặt'],
+            'adddetail' => [ 'class' => ' btn-default' , 'icon' => 'fa fa-plus'   , 'title' => 'Thêm'],
             'unknow' => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
         ],
         'buttonChangeStatus' => [
@@ -35,7 +38,13 @@ return [
         'search' => [
             'role'   => ['all','id','name'],
             'user'   => ['all','fullname','id','username'],
+            'permission'   => ['all','id','name'],
             'unknow' => ['id','name','role'],
+        ]
+    ],
+    'unknow' => [
+        'role' => [
+            '-1' => 'Không xác định'
         ]
     ]
 ];

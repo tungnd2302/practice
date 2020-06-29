@@ -23,5 +23,9 @@
 <link rel="stylesheet" href="{{ asset('adminlte/plugins/summernote/summernote-bs4.css') }}">
 <!-- my_css -->
 <link rel="stylesheet" href="{{ asset('customise/Backend/css/main.css') }}">
+<!-- select2 -->
+<link rel="stylesheet" href="{{ asset('customise/Backend/plugin/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('customise/Backend/plugin/select2/select2-bootstrap4.min.css') }}">
+
 <!-- Google Font: Source Sans Pro -->
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">

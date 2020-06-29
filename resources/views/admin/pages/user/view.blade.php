@@ -2,8 +2,8 @@
 @section('content')
 @php
     $statusTemplateList = config('myapp.template.buttonChangeStatus');
-    $username      = $items['user']['fullname'];
-    $role          = $items['role']['name'];
+    $username      = isset($items['user']['fullname']) ? $items['user']['fullname'] :    'Không xác định';
+    $role          = (isset($items['role']['name']) && ($items['role']['status'] !== 0)) ? $items['role']['name'] : 'Không xác định' ;
     //id
     $id = $items['user']['id'];
     // Trạng thắi

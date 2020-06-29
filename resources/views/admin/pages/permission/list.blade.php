@@ -9,9 +9,7 @@
                 <thead>
                     <tr>
                         <td>#</td>
-                        <td>Username</td>
-                        <td>Họ tên</td>
-                        <td>Chức vụ</td>
+                        <td>Tên quyền</td>
                         <td>Ngày tạo</td>
                         <td>Trạng thái</td>
                         <td>Thao tác</td>
@@ -25,19 +23,15 @@
                     @else
                         @foreach ($items as $key => $item)
                             @php
-                                $fullname = $item['fullname'];
+
+                                $name = $item['name'];
                                 $buttonChangeStatus = Practice::ShowStatusButton($controllerName,$item['status'],$item['id']);
                                 $buttonAction       = Practice::ShowActionButton($controllerName,$item['id']);
                                 $created = $item['created'];
-                                $username = $item['username'];
-                                $rolestatus  = $item['rolestatus'];
-                                $rolename   = ($rolestatus == 1) ? $item['rolename'] : 'Không xác định';
                             @endphp
                             <tr>
                                 <td>{{ $items->firstItem() + $key }}</td>
-                                <td>{{ $username }}</td>
-                                <td>{{ $fullname }}</td>
-                                <td>{{ $rolename }}</td>
+                                <td>{{ $name }}</td>
                                 <td>{{ $created }}</td>
                                 <td>{!! $buttonChangeStatus !!}</td>
                                 <td>{!! $buttonAction !!}</td>
