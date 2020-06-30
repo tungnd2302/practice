@@ -46,5 +46,14 @@ return [
         'role' => [
             '-1' => 'Không xác định'
         ]
-    ]
+    ],
+    'scope' => [
+        'user' => 'Quản lý người dùng',
+        'role' => 'Quản lý chức vụ',
+        'permission' => 'Quản lý phân quyền',
+        'post' => 'Quản lý bài viết',
+        'test' => 'Quản lý bộ đề',
+        'account' => 'Quản lý tài khoản người dùng',
+        'system' => 'Quản lý hệ thống'
+    ],
 ];

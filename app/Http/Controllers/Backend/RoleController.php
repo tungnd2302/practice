@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\Backend\Role;
+use App\Models\Backend\Permission;
+use App\Models\Backend\Role_permission as RolePermission;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 
@@ -40,11 +42,20 @@ class RoleController extends BaseController
 
     public function form(Request $request){
         $items = [];
+        $model = new Permission();
+        $permissions = $model->getItem(null,['task' => 'get-by-active-status']);
+        // echo '<pre>';
+        // print_r($permissions);
+        // echo '<pre>';
+        // die;
         if($request->id){
             $params['id'] = $request->id;
             $items = $this->model->getItem($params,['task' => 'get-item']);
         }
-        return view($this->pathView . '.form',['items' => $items]);
+        return view($this->pathView . '.form',[
+            'items' => $items,
+            'permissions' => $permissions
+        ]);
     }
 
     public function save(RoleRequest $request){
@@ -60,7 +71,14 @@ class RoleController extends BaseController
             foreach($fields as $key => $field){
                 $params[$key] = $field;
             }
-            $items = $this->model->saveItem($params,['task' => 'save-item']);
+
+            $lastId = $this->model->saveItem($params,['task' => 'save-item']);
+            $model = new RolePermission();
+            foreach($fields['permission_id'] as $key => $field){
+                $params['permission_id'] = $field;
+                $params['role_id'] = $lastId;
+                $model->saveItem($params,['task' => 'save-item']);
+            }
             $notify = "Tạo ". $this->nameInVN." thành công!";
         }
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);

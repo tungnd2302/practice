@@ -9,6 +9,8 @@ use App\Http\Requests\PermissionRequest;
 use App\Models\Backend\Permission as AppModel;
 use App\Models\Backend\User;
 use App\Models\Backend\Role;
+use App\Models\Backend\Permission_detail as PermissionDetail;
+
 
 class PermissionController extends BaseController
 {
@@ -100,19 +102,44 @@ class PermissionController extends BaseController
         $id = $request->id;
         $params['id']     = $id;
         $items = $this->model->deteleItem($params,['task' => 'delete-item']);
+        $model = new PermissionDetail();
+        $model->deteleItem($params,['task' => 'delete-action-item-by-id-permission']);
         $notify = "Xóa ". $this->nameInVN." thành công!";
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
     public function adddetail(Request $request){
-        return view($this->pathView . '.adddetail');
-    } 
+        $id = $request->id;
+        $params['id_permission'] = $id;
+        $model = new PermissionDetail();
+        $actionsModel = $model->getItem($params,['task' => 'get-action-item']);
+        // echo '<pre>';
+        // print_r($actionsModel);
+        // echo '<pre>';
+        // die;
+        return view($this->pathView . '.adddetail',[
+            'id' => $id,
+            'actionsModel' => $actionsModel
+        ]);
+        $notify = "Thêm ". $this->nameInVN." thành công!";
+        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
+    }
 
     public function saveedit(Request $request){
-        echo '<pre>';
-        print_r($request->all());
-        echo '</pre>';
+        $actions = $request->action;
+        $params['scope'] = $request->scope;
+        $params['id_permission'] = $request->id;
+        $model = new PermissionDetail();
+        if(isset($params['id_permission'])){
+            $model->deteleItem($params,['task' => 'delete-action-item']);
+            foreach($actions as $item){
+                $params['action'] = $item;
+                $model->saveItem($params,['task' => 'save-item']);
+            }
 
+        }
+        $notify = "Thêm ". $this->nameInVN." thành công!";
+        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
 

@@ -90,6 +90,10 @@
             if($options['task'] == 'get-item'){
                 return $this->where('id',$params['id'])->first()->toArray();
             }
+
+            if($options['task'] == 'get-by-active-status'){
+                return $this->select('id','name')->where('status',1)->pluck('name','id')->toArray();
+            }
         }
 
         public function deteleItem($params = null, $options = null){

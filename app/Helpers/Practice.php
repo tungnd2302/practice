@@ -96,7 +96,7 @@
                                           <i class="fas fa-times"></i></button>
                                       </div>
                                   </div>
-                                
+
                                 <div class="card-body" style="display:none">%s</div></div>
                                 ',$value,$actionView);
           }

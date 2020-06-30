@@ -57,6 +57,20 @@ Route::group(['prefix' => $prefixAdmin],function(){
         Route::get('/delete/{id}', 		    		['as' => $controllerName . 'delete'          , 'uses' => $controller.'delete']);
 		Route::get('/adddetail/{id}', 		    		['as' => $controllerName . 'adddetail'          , 'uses' => $controller.'adddetail']);
 		Route::post('/saveedit', 		    	        ['as' => $controllerName . 'saveedit'            , 'uses' => $controller.'saveedit']);
+    });
+
+    $prefix = 'permission_detail';
+    $controllerName = 'permission_detail';
+	Route::group(['prefix' => $prefix ,'namespace' => 'Backend', 'middleware' => 'auth'],function() use ($controllerName){
+		$controller = ucfirst($controllerName) . 'Controller@';
+		// echo $controller;
+        Route::get('/', 		    				['as' => $controllerName                     , 'uses' => $controller.'index']);
+        Route::get('/form/{id?}', 		    	    ['as' => $controllerName . 'form'            , 'uses' => $controller.'form']);
+        Route::post('/save', 		    	        ['as' => $controllerName . 'save'            , 'uses' => $controller.'save']);
+        Route::get('/change-status-{status}/{id}', 	['as' => $controllerName . 'changestatus'    , 'uses' => $controller.'changestatus']);
+        Route::get('/delete/{id}', 		    		['as' => $controllerName . 'delete'          , 'uses' => $controller.'delete']);
+		Route::get('/adddetail/{id}', 		    		['as' => $controllerName . 'adddetail'          , 'uses' => $controller.'adddetail']);
+		Route::post('/saveedit', 		    	        ['as' => $controllerName . 'saveedit'            , 'uses' => $controller.'saveedit']);
 	});
 
 	$prefix = 'user';

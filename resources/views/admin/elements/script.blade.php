@@ -36,3 +36,7 @@
 <script src="{{ asset('customise/Backend/plugin/select2/select2.full.min.js') }}"></script>
 
 <script src="{{ asset('customise/Backend/js/main.js') }}"></script>
+
+<script>
+    $('.select2').select2()
+</script>

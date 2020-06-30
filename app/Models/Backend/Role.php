@@ -14,7 +14,7 @@
             'name', 'status', 'createdby','created_at','update_at'
         ];
         private $fieldSearchAccepted = ['id','name'];
-        private $fieldSaveNotAccepted = ['_token'];
+        private $fieldSaveNotAccepted = ['_token','permission_id'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
@@ -63,7 +63,7 @@
         public function saveItem($params = null, $options = null)
         {
             if($options['task'] == 'save-item'){
-               date_default_timezone_set("Asia/Bangkok");
+                date_default_timezone_set("Asia/Bangkok");
                 foreach($params as $key => $item){
                     if(in_array($key,$this->fieldSaveNotAccepted)){
                         unset($params[$key]);
@@ -71,7 +71,8 @@
                 }
                 $params['created'] = date('Y-m-d H:i:s',time());
                 $params['createdby'] = Auth::user()->fullname;
-                $this->insert($params);
+                $id = $this->insertGetId($params);
+                return $id;
             }
 
             if($options['task'] == 'update-item'){
