@@ -23,7 +23,7 @@ class Role_permission extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     private $fieldSearchAccepted = ['id','fullname','username'];
-    private $fieldSaveNotAccepted = ['_token', 'name', 'status', 'createdby','created_at','update_at','id_permission'];
+    private $fieldSaveNotAccepted = ['_token', 'name', 'status', 'createdby','created_at','update_at','id_permission','id'];
     protected $primaryKey = 'id';
 
     public function getAllItems($params = null, $options = null)
@@ -80,52 +80,37 @@ class Role_permission extends Authenticatable
                     unset($params[$key]);
                 }
             }
-            echo '<pre>';
-            print_r($params);
-            echo '<pre>';
-
             $this->insert($params);
-        }
-
-        if($options['task'] == 'update-item'){
-            foreach($params as $key => $item){
-                if(in_array($key,$this->fieldSaveNotAccepted)){
-                    unset($params[$key]);
-                }
-            }
-            $query = $this->where('id',$params['id']);
-            array_shift($params);
-            $query->update($params);
         }
     }
 
     public function getItem($params = null, $options = null){
         if($options['task'] == 'get-item'){
-            // return self::find($params['id'])->first();
-            $items['info']['user'] =  self::find($params['id'])->where('id',$params['id'])->first()->toArray();
-            $roleid = $items['info']['user']['roleid'];
-            if($roleid < 0){
-                return $items['info'];
-            }
-            $items['info']['role'] =  self::find($params['id'])->roles()->where('id',$roleid)->first()->toArray();
-            return $items['info'];
+            echo '<pre>';
+            print_r(self::find()->permission()->get());
+            echo '</pre>';
+            die;
         }
-
-        if($options['task'] == 'get-active-item'){
-            return $this->select('id','username')->where('status',1)->pluck('username', 'id')->toArray();
-        }
-        // return self::find($params['id'])->roles()->first();
     }
 
     public function deteleItem($params = null, $options = null){
         if($options['task'] == 'delete-item'){
             $this->where('id',$params['id'])->delete();
         }
+
+        if($options['task'] == 'delete-item-by-role-id'){
+            $this->where('role_id',$params['id'])->delete();
+        }
     }
 
     public function roles()
     {
         return $this->belongsTo('App\Models\Backend\Role','roleid','id');
+    }
+
+    public function permission()
+    {
+        return $this->hasMany('App\Models\Backend\permission','id','permission_id');
     }
 
 }

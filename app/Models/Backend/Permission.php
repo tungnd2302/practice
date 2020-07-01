@@ -94,6 +94,16 @@
             if($options['task'] == 'get-by-active-status'){
                 return $this->select('id','name')->where('status',1)->pluck('name','id')->toArray();
             }
+
+            if($options['task'] == 'get-name-permission'){
+                echo '<pre>';
+                print_r(self::find($params['id'])->Role_permission()->get());
+                echo '</pre>';
+                die;
+            }
+
+
+            // get-name-permission
         }
 
         public function deteleItem($params = null, $options = null){
@@ -110,10 +120,12 @@
             }
         }
 
-        public function Users()
+        public function Role()
         {
-            return $this->hasMany('App\Models\Backend\Role\Usear','roleid','id');
+            return $this->belongsToMany('App\Models\Backend\Role','App\Models\Backend\Role_permision','permission_id','role_id');
         }
+
+        //'role_id','permission_id'
 
 	}
 

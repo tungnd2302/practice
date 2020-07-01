@@ -50,6 +50,9 @@ class RoleController extends BaseController
         // die;
         if($request->id){
             $params['id'] = $request->id;
+            $model = new Role();
+            $permissions = $model->getItem($params,['task' => 'get-name-permission']);
+
             $items = $this->model->getItem($params,['task' => 'get-item']);
         }
         return view($this->pathView . '.form',[
@@ -65,6 +68,15 @@ class RoleController extends BaseController
                 $params[$key] = $field;
             }
             $items = $this->model->saveItem($params,['task' => 'update-item']);
+
+            $model = new RolePermission();
+            $model->deteleItem($params,['task' => 'delete-item-by-role-id']);
+            foreach($fields['permission_id'] as $key => $field){
+                $params['permission_id'] = $field;
+                $params['role_id'] = $params['id'];
+                $model->saveItem($params,['task' => 'save-item']);
+            }
+
             $notify = "Cập nhật ". $this->nameInVN." thành công!";
         }else{
             $fields = $request->all();
