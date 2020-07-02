@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('Nhóm quyền'); !!}
-                        {!! Form::select('permission_id[]',$permissions,'',['class' => 'select2 form-control','multiple' => 'multiple']); !!}
+                        {!! Form::select('permission_id[]',$permissions,$permissions_selected,['class' => 'select2 form-control','multiple' => 'multiple']); !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Trạng thái'); !!}

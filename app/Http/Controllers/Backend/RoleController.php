@@ -51,13 +51,13 @@ class RoleController extends BaseController
         if($request->id){
             $params['id'] = $request->id;
             $model = new Role();
-            $permissions = $model->getItem($params,['task' => 'get-name-permission']);
-
+            $permissions_selected = $model->getItem($params,['task' => 'get-name-permission']);
             $items = $this->model->getItem($params,['task' => 'get-item']);
         }
         return view($this->pathView . '.form',[
             'items' => $items,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'permissions_selected' => $permissions_selected
         ]);
     }
 
@@ -71,10 +71,12 @@ class RoleController extends BaseController
 
             $model = new RolePermission();
             $model->deteleItem($params,['task' => 'delete-item-by-role-id']);
-            foreach($fields['permission_id'] as $key => $field){
-                $params['permission_id'] = $field;
-                $params['role_id'] = $params['id'];
-                $model->saveItem($params,['task' => 'save-item']);
+            if(isset($fields['permission_id'])){
+                foreach($fields['permission_id'] as $key => $field){
+                    $params['permission_id'] = $field;
+                    $params['role_id'] = $params['id'];
+                    $model->saveItem($params,['task' => 'save-item']);
+                }
             }
 
             $notify = "Cập nhật ". $this->nameInVN." thành công!";
@@ -86,10 +88,12 @@ class RoleController extends BaseController
 
             $lastId = $this->model->saveItem($params,['task' => 'save-item']);
             $model = new RolePermission();
-            foreach($fields['permission_id'] as $key => $field){
-                $params['permission_id'] = $field;
-                $params['role_id'] = $lastId;
-                $model->saveItem($params,['task' => 'save-item']);
+            if(isset($fields['permission_id'])){
+                foreach($fields['permission_id'] as $key => $field){
+                    $params['permission_id'] = $field;
+                    $params['role_id'] = $lastId;
+                    $model->saveItem($params,['task' => 'save-item']);
+                }
             }
             $notify = "Tạo ". $this->nameInVN." thành công!";
         }

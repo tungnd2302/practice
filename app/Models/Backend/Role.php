@@ -96,10 +96,7 @@
             }
 
             if($options['task'] == 'get-name-permission'){
-                echo '<pre>';
-                print_r(self::find($params['id'])->Role()->get()->toArray());
-                echo '</pre>';
-                die;
+              return self::find($params['id'])->Permission()->pluck('permission.id')->toArray();
             }
 
             //get-name-permission
@@ -124,7 +121,7 @@
             return $this->hasMany('App\Models\Backend\Role\Usear','roleid','id');
         }
 
-        public function Role()
+        public function Permission()
         {
             return $this->belongsToMany('App\Models\Backend\Permission','App\Models\Backend\Role_permission','role_id','permission_id');
         }
