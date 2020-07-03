@@ -32,6 +32,7 @@ class UserController extends BaseController
 
         $items  = $this->model->getAllItems($params,['task' => 'get-all-items']);
         $status = $this->model->countItem($params,['task' => 'count-status']);
+
         return view($this->pathView . '.index',[
             'items' => $items,
             'status' => $status,
@@ -47,10 +48,7 @@ class UserController extends BaseController
             $params['id'] = $request->id;
             $items = $this->model->getItem($params,['task' => 'get-item']);
         }
-        // echo '<pre>';
-        // print_r($items);
-        // echo '<pre>';
-        // die;
+
         return view($this->pathView . '.form',[
             'items' => $items,
             'roles' => $roles

@@ -10,6 +10,7 @@
                     <tr>
                         <td>#</td>
                         <td>Tên quyền</td>
+                        <td>Phạm vi áp dụng</td>
                         <td>Ngày tạo</td>
                         <td>Trạng thái</td>
                         <td>Thao tác</td>
@@ -23,15 +24,26 @@
                     @else
                         @foreach ($items as $key => $item)
                             @php
-
+                                $scopes   = config('myapp.scope');
                                 $name = $item['name'];
+                                $scope   = $scopes[$item['scope']];
                                 $buttonChangeStatus = Practice::ShowStatusButton($controllerName,$item['status'],$item['id']);
                                 $buttonAction       = Practice::ShowActionButton($controllerName,$item['id']);
                                 $created = $item['created'];
+                                $actionType = '';
                             @endphp
                             <tr>
                                 <td>{{ $items->firstItem() + $key }}</td>
                                 <td>{{ $name }}</td>
+                                <td>
+                                    {{ $scope }} <br>
+                                    @foreach ($item->Permission_detail as $item)
+                                        @php
+                                             $actionType .= $item->action . ', '
+                                        @endphp
+                                    @endforeach
+                                    Loại hành động: {{  $actionType }}
+                                </td>
                                 <td>{{ $created }}</td>
                                 <td>{!! $buttonChangeStatus !!}</td>
                                 <td>{!! $buttonAction !!}</td>

@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use Illuminate\Routing\Controller as BaseController;
-use App\Models\Backend\Role;
+
+use App\Http\Controllers\Controller as BaseController;
+use App\Models\Backend\Role as Role;
 use App\Models\Backend\Permission;
 use App\Models\Backend\Role_permission as RolePermission;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use Illuminate\Support\Facades\Auth;
 
 
 class RoleController extends BaseController
@@ -25,8 +27,11 @@ class RoleController extends BaseController
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request,Role $role)
     {
+        // Auth()->user()->can('index');
+        // dd(Auth()->user()->can('index'));
+        $this->authorize('index', $role);
         $params['status'] = $request->status;
         $params['fieldSearch'] = $request->fieldSearch;
         $params['contentSearch'] =  $request->contentSearch;
@@ -44,6 +49,7 @@ class RoleController extends BaseController
         $items = [];
         $model = new Permission();
         $permissions = $model->getItem(null,['task' => 'get-by-active-status']);
+        $permissions_selected = [];
         // echo '<pre>';
         // print_r($permissions);
         // echo '<pre>';

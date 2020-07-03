@@ -36,10 +36,10 @@ class PermissionController extends BaseController
 
         $items  = $this->model->getAllItems($params,['task' => 'get-all-items']);
         $status = $this->model->countItem($params,['task' => 'count-status']);
-    //    echo '<pre>';
-    //    print_r($items);
-    //    echo '</pre>';
-
+        // echo '<pre>';
+        // print_r($items[0]->Permission_detail->toArray());
+        // echo '</pre>';
+        // die;
         return view($this->pathView . '.index',[
             'items' => $items,
             'status' => $status,
@@ -53,36 +53,58 @@ class PermissionController extends BaseController
         $users = $userModel->getItem(null,['task' => 'get-active-item']);
         $roleModel = new Role();
         $roles = $roleModel->getItem(null,['task' => 'get-active-item']);
-        // echo '<pre>';
-        // print_r($users);
-        // echo '</pre>';
-        // die;
+        $actionsModel = [];
         if($request->id){
             $params['id'] = $request->id;
             $items = $this->model->getItem($params,['task' => 'get-item']);
+            $model = new PermissionDetail();
+            $actionsModel = $model->getItem($params,['task' => 'get-action-item']);
         }
         return view($this->pathView . '.form',[
             'items' => $items,
             'roles' => $roles,
-            'users' => $users
+            'users' => $users,
+            'actionsModel' => $actionsModel
         ]);
     }
 
     public function save(PermissionRequest $request){
-        if($request->id){
+        if($request->id)
+        {
             $fields = $request->all();
             foreach($fields as $key => $field){
                 $params[$key] = $field;
             }
-            $items = $this->model->saveItem($params,['task' => 'update-item']);
+
+            $model = new PermissionDetail();
+            $model->deteleItem($params,['task' => 'delete-action-item-by-id-permission']);
+            foreach($fields['action'] as $action){
+                $params['action'] = $action;
+                $params['id_permission'] = $params['id'];
+                $model->saveItem($params,['task' => 'save-item']);
+            }
+
+            $this->model->saveItem($params,['task' => 'update-item']);
             $notify = "Cập nhật ". $this->nameInVN." thành công!";
-        }else{
+
+        }
+        else
+        {
+
             $fields = $request->all();
             foreach($fields as $key => $field){
                 $params[$key] = $field;
             }
-            $items = $this->model->saveItem($params,['task' => 'save-item']);
+            $id_permission = $this->model->saveItem($params,['task' => 'save-item']);
+
+            $model = new PermissionDetail();
+            foreach($fields['action'] as $action){
+                $params['action'] = $action;
+                $params['id_permission'] = $id_permission;
+                $model->saveItem($params,['task' => 'save-item']);
+            }
             $notify = "Tạo ". $this->nameInVN." thành công!";
+
         }
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
@@ -105,40 +127,6 @@ class PermissionController extends BaseController
         $model = new PermissionDetail();
         $model->deteleItem($params,['task' => 'delete-action-item-by-id-permission']);
         $notify = "Xóa ". $this->nameInVN." thành công!";
-        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
-    }
-
-    public function adddetail(Request $request){
-        $id = $request->id;
-        $params['id_permission'] = $id;
-        $model = new PermissionDetail();
-        $actionsModel = $model->getItem($params,['task' => 'get-action-item']);
-        // echo '<pre>';
-        // print_r($actionsModel);
-        // echo '<pre>';
-        // die;
-        return view($this->pathView . '.adddetail',[
-            'id' => $id,
-            'actionsModel' => $actionsModel
-        ]);
-        $notify = "Thêm ". $this->nameInVN." thành công!";
-        return redirect()->route($this->controllerName)->with("practice_notify", $notify);
-    }
-
-    public function saveedit(Request $request){
-        $actions = $request->action;
-        $params['scope'] = $request->scope;
-        $params['id_permission'] = $request->id;
-        $model = new PermissionDetail();
-        if(isset($params['id_permission'])){
-            $model->deteleItem($params,['task' => 'delete-action-item']);
-            foreach($actions as $item){
-                $params['action'] = $item;
-                $model->saveItem($params,['task' => 'save-item']);
-            }
-
-        }
-        $notify = "Thêm ". $this->nameInVN." thành công!";
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 

@@ -8,7 +8,7 @@ return [
         'button' => [
             'role'   => ['form'],
             'user'   => ['form','delete','view'],
-            'permission'   => ['form','delete','adddetail'],
+            'permission'   => ['form','delete'],
             'unknow' => ['form','delete'],
         ],
         'buttonType' => [

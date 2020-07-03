@@ -14,7 +14,7 @@
             'id_permission', 'scope', 'action',
         ];
         private $fieldSearchAccepted = ['id','action'];
-        private $fieldSaveNotAccepted = ['_token'];
+        private $fieldSaveNotAccepted = ['_token','name','status','id','scope'];
 
 
         public function saveItem($params = null, $options = null)
@@ -38,7 +38,7 @@
             }
 
             if($options['task'] == 'get-action-item'){
-                return $this->where('id_permission',$params['id_permission'])->get()->toArray();
+                return $this->where('id_permission',$params['id'])->get()->toArray();
             }
         }
 
@@ -52,6 +52,11 @@
             if($options['task'] == 'delete-action-item-by-id-permission'){
                 $this->where('id_permission',$params['id'])->delete();
             }
+        }
+
+        public function Permission()
+        {
+            return $this->belongsTo('App\Models\Backend\Permission','id','id_permission');
         }
 	}
 

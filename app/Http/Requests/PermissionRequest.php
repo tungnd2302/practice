@@ -31,7 +31,7 @@ class PermissionRequest extends FormRequest
             $condName  .= ",$id";
         }
         return [
-            'name'        => $condName,
+
         ];
     }
 

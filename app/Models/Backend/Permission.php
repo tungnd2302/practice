@@ -11,15 +11,15 @@
 	    public $timestamps = false;
 	    public $table 	   = 'permission';
         protected $fillable = [
-            'name', 'status', 'createdby','created_at','update_at'
+            'name', 'status', 'createdby','created_at','update_at','action'
         ];
         private $fieldSearchAccepted = ['id','name'];
-        private $fieldSaveNotAccepted = ['_token','action'];
+        private $fieldSaveNotAccepted = ['_token','action','id_permission'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
             if($options['task'] == 'get-all-items'){
-                $query = $this->select('name','id','status','created');
+                $query = $this->select('name','id','status','created','scope');
                 if($params['status'] !== null){
                     $query->where('status',$params['status']);
                 }
@@ -71,7 +71,7 @@
                 }
                 $params['created'] = date('Y-m-d H:i:s',time());
                 $params['createdby'] = Auth::user()->fullname;
-                $this->insert($params);
+                return $this->insertGetId($params);
             }
 
             if($options['task'] == 'update-item'){
@@ -124,6 +124,13 @@
         {
             return $this->belongsToMany('App\Models\Backend\Role','App\Models\Backend\Role_permision','permission_id','role_id');
         }
+
+        public function Permission_detail()
+        {
+            return $this->hasMany('App\Models\Backend\Permission_detail','id_permission','id');
+        }
+
+
 
         //'role_id','permission_id'
 
