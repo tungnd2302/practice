@@ -12,10 +12,6 @@ class RolePolicy extends Policy
     public function __construct(){}
 
     public function index(User $user){
-        echo '<pre>';
-        print_r($user->p);
-        echo '</pre>';
-        die;
         return $this->FindPolicy($user,$this->site,'view');
     }
 

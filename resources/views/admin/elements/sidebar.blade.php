@@ -80,15 +80,17 @@
                 </a>
             </li>
             @endcan
-             {{--<li class="nav-item">
-                <a href="pages/gallery.html" class="nav-link">
+            @can('index', App\Models\Backend\Question_category::class)
+             <li class="nav-item">
+                <a href="{{ route('questioncategory') }}" class="nav-link">
                     <i class="nav-icon fa fa-tachometer-alt"></i>
                     <p>
-                        Danh sách câu hỏi
+                        Danh sách loại câu hỏi
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
+            @endcan
+            {{--<li class="nav-item">
                 <a href="pages/gallery.html" class="nav-link">
                     <i class="nav-icon fa fa-tachometer-alt"></i>
                     <p>

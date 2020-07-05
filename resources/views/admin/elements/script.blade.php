@@ -34,10 +34,10 @@
 <script src="{{ asset('adminlte/dist/js/demo.js') }}"></script>
 
 <script src="{{ asset('customise/Backend/plugin/select2/select2.full.min.js') }}"></script>
-
 <script src="{{ asset('customise/Backend/js/main.js') }}"></script>
+<script src="{{ asset('customise/Backend/plugin/ckeditor/ckeditor.js') }}"></script>
 
 <script>
     $('.select2').select2()
-    $('.textarea').summernote()
+    CKEDITOR.replace('editor1')
 </script>

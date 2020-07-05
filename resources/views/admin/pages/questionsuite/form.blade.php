@@ -7,6 +7,7 @@
     $id       = (isset($items['id'])) ? $items['id'] : '';
     $status   = (isset($items['status'])) ? $items['status'] : '';
     $level   = (isset($items['level'])) ? $items['level'] : '';
+    $description   = (isset($items['description'])) ? $items['description'] : '';
     $title    = (isset($items['id'])) ? "Chỉnh sửa" : "Tạo mới";
 
 
@@ -32,7 +33,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('Mô tả'); !!}
-                        {!! Form::textarea('description', null, ['class' => 'textarea form-control']) !!}
+                        {!! Form::textarea('description', $description, ['class' => 'form-control','id' => 'editor1']) !!}
                     </div>
 
                     <div class="form-group">

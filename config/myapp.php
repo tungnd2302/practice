@@ -54,6 +54,7 @@ return [
         'permission' => 'Quản lý phân quyền',
         'post' => 'Quản lý bài viết',
         'questionSuite' => 'Quản lý bộ đề',
+        'questionCategory' => 'Quản lý loại câu hỏi',
         'account' => 'Quản lý tài khoản người dùng',
         'system' => 'Quản lý hệ thống'
     ],

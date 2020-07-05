@@ -29,14 +29,15 @@
                                 $buttonChangeStatus = Practice::ShowStatusButton($controllerName,$item['status'],$item['id']);
                                 $buttonAction       = Practice::ShowActionButton($controllerName,$item['id']);
                                 $created = $item['created'];
-                                $level = $item['level'];
+                                $arrayLevelTemplate = config('myapp.level');
+                                $level = $arrayLevelTemplate[$item['level']];
                                 $description = $item['description'];
                             @endphp
                             <tr>
                                 <td>{{ $items->firstItem() + $key }}</td>
                                 <td>{{ $name }}</td>
                                 <td>{{ $level }}</td>
-                                <td>{{ $description }}</td>
+                                <td>{!! $description !!}</td>
                                 <td>{!! $buttonChangeStatus !!}</td>
                                 <td>{!! $buttonAction !!}</td>
                             </tr>

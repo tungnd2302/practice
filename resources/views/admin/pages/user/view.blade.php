@@ -2,19 +2,19 @@
 @section('content')
 @php
     $statusTemplateList = config('myapp.template.buttonChangeStatus');
-    $username      = isset($items['user']['fullname']) ? $items['user']['fullname'] :    'Không xác định';
-    $role          = (isset($items['role']['name']) && ($items['role']['status'] !== 0)) ? $items['role']['name'] : 'Không xác định' ;
+    $username      = isset($item->fullname) ? $item->fullname :    'Không xác định';
+    $role          = (isset($item->roles->name) && ($item->roles->status !== 0)) ? $item->roles->name : 'Không xác định' ;
     //id
-    $id = $items['user']['id'];
+    $id = $item->id;
     // Trạng thắi
-    $currentStatus = $items['user']['status'];
+    $currentStatus =  $item->status;
     $titleStatus   = $statusTemplateList[$currentStatus]['name'];
     // Ngày sinh
-    $birthday      = (empty($items['user']['birthday'])) ? 'Chưa cập nhật' : $items['user']['birthday'];
+    $birthday      = (empty($item->birthday)) ? 'Chưa cập nhật' : $item->birthday;
     // Email
-    $email         = (empty($items['user']['email'])) ? 'Chưa cập nhật' : $items['user']['email'];
+    $email         = (empty($item->email)) ? 'Chưa cập nhật' : $item->email;
     // Created
-    $created         = (empty($items['user']['created'])) ? 'Chưa cập nhật' : date('d-m-Y',strtotime($items['user']['created']));
+    $created         = (empty($item->created)) ? 'Chưa cập nhật' : date('d-m-Y',strtotime($item->created));
 // buttonChangeStatus $statusTemplateList
 @endphp
 <div class="content-wrapper">

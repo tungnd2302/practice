@@ -103,9 +103,9 @@ class UserController extends BaseController
 
     public function view(Request $request){
         $params['id'] = $request->id;
-        $items = $this->model->getItem($params,['task' => 'get-item']);
+        $item = $this->model->getItem($params,['task' => 'get-item']);
         return view($this->pathView . '.view',[
-            'items' => $items
+            'item' => $item
         ]);
     }
 

@@ -13,13 +13,13 @@
         protected $fillable = [
             'name', 'status', 'createdby','created_at','update_at'
         ];
-        private $fieldSearchAccepted = ['id','name'];
+        private $fieldSearchAccepted = ['id','name','description'];
         private $fieldSaveNotAccepted = ['_token'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
             if($options['task'] == 'get-all-items'){
-                $query = $this->select('name','id','status','created','level');
+                $query = $this->select('name','id','status','created','level','description');
                 if($params['status'] !== null){
                     $query->where('status',$params['status']);
                 }
