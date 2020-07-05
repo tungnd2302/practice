@@ -6,34 +6,35 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Models\Backend\Role as Role;
 use App\Models\Backend\User as User;
 use App\Models\Backend\Permission;
+use App\Models\Backend\Question_suite;
 use App\Models\Backend\Role_permission as RolePermission;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\QuestionSuiteRequest;
 use Illuminate\Support\Facades\Auth;
 
 
-class RoleController extends BaseController
+class QuestionSuiteController extends BaseController
 {
-    private $pathView = 'admin.pages.role';
-    private $controllerName = 'role';
-    private $nameInVN       = 'Chức vụ';
+    private $pathView = 'admin.pages.questionsuite';
+    private $controllerName = 'questionsuite';
+    private $nameInVN       = 'Bộ đề';
     private $model;
 
     public function __construct()
     {
-        $this->model = new Role();
+        $this->model = new Question_suite();
         view()->share([
             'controllerName' => $this->controllerName,
             'nameInVN'       => $this->nameInVN
         ]);
     }
 
-    public function index(Request $request,Role $role)
+    public function index(Request $request,Question_suite $Question_suite)
     {
         // Auth()->user()->can('index');
         // dd(Auth()->user());
-        $this->authorize('index', $role);
+        $this->authorize('index', $Question_suite);
         $params['status'] = $request->status;
         $params['fieldSearch'] = $request->fieldSearch;
         $params['contentSearch'] =  $request->contentSearch;
@@ -47,31 +48,24 @@ class RoleController extends BaseController
         ]);
     }
 
-    public function form(Request $request,Role $role){
-        $this->authorize('add', $role);
+    public function form(Request $request,Question_suite $Question_suite){
+        $this->authorize('add', $Question_suite);
         $items = [];
-        $model = new Permission();
-        $permissions = $model->getItem(null,['task' => 'get-by-active-status']);
-        $permissions_selected = [];
         // echo '<pre>';
         // print_r($permissions);
         // echo '<pre>';
         // die;
         if($request->id){
-            $this->authorize('form', $role);
+            $this->authorize('form', $Question_suite);
             $params['id'] = $request->id;
-            $model = new Role();
-            $permissions_selected = $model->getItem($params,['task' => 'get-name-permission']);
             $items = $this->model->getItem($params,['task' => 'get-item']);
         }
         return view($this->pathView . '.form',[
-            'items' => $items,
-            'permissions' => $permissions,
-            'permissions_selected' => $permissions_selected
+            'items' => $items
         ]);
     }
 
-    public function save(RoleRequest $request){
+    public function save(Request $request){
         if($request->id){
             $fields = $request->all();
             foreach($fields as $key => $field){
@@ -110,8 +104,8 @@ class RoleController extends BaseController
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
-    public function changestatus(Request $request,Role $role){
-        $this->authorize('form', $role);
+    public function changestatus(Request $request,Question_suite $Question_suite){
+        $this->authorize('form', $Question_suite);
         $status = $request->status;
         $id = $request->id;
         $params['id']     = $id;
@@ -122,8 +116,8 @@ class RoleController extends BaseController
         return redirect()->back()->with("practice_notify", $notify);
     }
 
-    public function delete(Request $request,Role $role){
-        $this->authorize('delete', $role);
+    public function delete(Request $request,Question_suite $Question_suite){
+        $this->authorize('delete', $Question_suite);
         $id = $request->id;
         $params['id']     = $id;
         $items = $this->model->deteleItem($params,['task' => 'delete-item']);

@@ -39,4 +39,5 @@
 
 <script>
     $('.select2').select2()
+    $('.textarea').summernote()
 </script>

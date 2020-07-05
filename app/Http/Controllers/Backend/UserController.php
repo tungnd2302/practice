@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller as BaseController;
 use App\Models\Backend\User;
 use App\Models\Backend\Role;
 use Illuminate\Http\Request;
@@ -24,8 +24,9 @@ class UserController extends BaseController
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request,User $user)
     {
+        $this->authorize('index', $user);
         $params['status'] = $request->status;
         $params['fieldSearch'] = $request->fieldSearch;
         $params['contentSearch'] =  $request->contentSearch;
@@ -40,27 +41,37 @@ class UserController extends BaseController
         ]);
     }
 
-    public function form(Request $request){
-        $items = [];
+    public function form(Request $request,User $user){
+        $this->authorize('add', $user);
+        $item = [];
         $roleModel = new Role();
         $roles = $roleModel->findItem(null,['task' => 'get-items-active']);
+        // echo '<pre>';
+        // print_r($roles);
+        // echo '</pre>';
+        // die;
         if($request->id){
+            $this->authorize('form', $user);
             $params['id'] = $request->id;
-            $items = $this->model->getItem($params,['task' => 'get-item']);
+            $item = $this->model->getItem($params,['task' => 'get-item']);
+            // echo '<pre>';
+            // print_r($item);
+            // echo '</pre>';
+            // die;
         }
 
         return view($this->pathView . '.form',[
-            'items' => $items,
+            'item' => $item,
             'roles' => $roles
         ]);
     }
 
     public function save(UserRequest $request){
-        // echo '<pre>';
-        // print_r($request->all());
-        // echo '</pre>';
-        // die;
         if($request->id){
+            // echo '<pre>';
+            // print_r($request->id);
+            // echo '</pre>';
+            // die;
             $fields = $request->all();
             foreach($fields as $key => $field){
                 $params[$key] = $field;
@@ -78,7 +89,8 @@ class UserController extends BaseController
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
-    public function changestatus(Request $request){
+    public function changestatus(Request $request,User $user){
+        $this->authorize('form', $user);
         $status = $request->status;
         $id = $request->id;
         $params['id']     = $id;
@@ -97,7 +109,8 @@ class UserController extends BaseController
         ]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request,User $user){
+        $this->authorize('form', $user);
         $id = $request->id;
 
         if(Auth()->user()->id == $id){

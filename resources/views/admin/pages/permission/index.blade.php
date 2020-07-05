@@ -7,7 +7,7 @@
       <div class="container-fluid">
             @include('admin.partials.filter')
             <div class="card">
-                @include('admin.partials.card_title',['title' => 'Danh sách Quyền','form' => true])
+                @include('admin.partials.card_title',['title' => 'Danh sách Quyền','model' => App\Models\Backend\Permission::class,'form' => true])
                 @include('admin.pages.'.$controllerName.'.list')
                 <div class="card-footer">
                   Footer

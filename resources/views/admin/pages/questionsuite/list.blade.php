@@ -9,9 +9,9 @@
                 <thead>
                     <tr>
                         <td>#</td>
-                        <td>Tên chức vụ</td>
-                        <td>Nhóm quyền</td>
-                        <td>Ngày tạo</td>
+                        <td>Tên bộ đề</td>
+                        <td>Độ khó</td>
+                        <td>Mô tả</td>
                         <td>Trạng thái</td>
                         <td>Thao tác</td>
                     </tr>
@@ -29,16 +29,14 @@
                                 $buttonChangeStatus = Practice::ShowStatusButton($controllerName,$item['status'],$item['id']);
                                 $buttonAction       = Practice::ShowActionButton($controllerName,$item['id']);
                                 $created = $item['created'];
+                                $level = $item['level'];
+                                $description = $item['description'];
                             @endphp
                             <tr>
                                 <td>{{ $items->firstItem() + $key }}</td>
                                 <td>{{ $name }}</td>
-                                <td>
-                                    @foreach ($item->permission as $item)
-                                        {{ $item->name }} <br/>
-                                    @endforeach
-                                </td>
-                                <td>{{ $created }}</td>
+                                <td>{{ $level }}</td>
+                                <td>{{ $description }}</td>
                                 <td>{!! $buttonChangeStatus !!}</td>
                                 <td>{!! $buttonAction !!}</td>
                             </tr>

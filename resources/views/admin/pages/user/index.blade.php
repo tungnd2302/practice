@@ -7,18 +7,16 @@
       <div class="container-fluid">
             @include('admin.partials.filter')
             <div class="card">
-                @include('admin.partials.card_title',['title' => 'Danh sách ' . $nameInVN,'form' => true])
+                @include('admin.partials.card_title',['title' => 'Danh sách ' . $nameInVN,'model' => App\Models\Backend\User::class,'form' => true])
                 @include('admin.pages.'.$controllerName.'.list')
                 <div class="card-footer">
                   Footer
                 </div>
                 <!-- /.card-body -->
             </div>
-
       </div>
     </section>
-
-  </div>
+</div>
 
 
 @endsection

@@ -3,12 +3,12 @@
 @php
     $arrayTemplate = config('myapp.template.buttonChangeStatus');
     $unknowRole    = config('myapp.unknow.role');
-    $id       = (isset($items['user']['id'])) ? $items['user']['id'] : '';
-    $username = (isset($items['user']['username'])) ? $items['user']['username'] : '';
-    $fullname = (isset($items['user']['fullname'])) ? $items['user']['fullname'] : '';
-    $status   = (isset($items['user']['status'])) ? $items['user']['status'] : '';
-    $roleid   = (isset($items['user']['id'])) ? $items['user']['id'] : '';
-    $title    = (isset($items['user']['id'])) ? "Chỉnh sửa" : "Tạo mới";
+    $id       = (isset($item->id)) ? $item->id : '';
+    $username = (isset($item->username)) ? $item->username :  '';
+    $fullname = (isset($item->fullname)) ? $item->fullname :  '';
+    $status   = (isset($item->status))   ? $item->status :    '';
+    $roleid   = (isset($item->roles->id)) ? $item->roles->id : '';
+    $title    = (isset($item->id)) ? "Chỉnh sửa" : "Tạo mới";
     $roles    = (count($roles) < 1) ? $unknowRole : $roles;
 @endphp
 <div class="content-wrapper">

@@ -95,24 +95,42 @@ class User extends Authenticatable
                 }
                 $query = $this->where('id',$params['id']);
                 array_shift($params);
+                // echo '<pre>';
+                // print_r($params);
+                // echo '</pre>';
+                // die;
                 $query->update($params);
             }
         }
 
         public function getItem($params = null, $options = null){
             if($options['task'] == 'get-item'){
+                // echo '<pre>';
+                // print_r();
+                // echo '</pre>';
+                // die;
                 // return self::find($params['id'])->first();
-                $items['info']['user'] =  self::find($params['id'])->where('id',$params['id'])->first()->toArray();
-                $roleid = $items['info']['user']['roleid'];
-                if($roleid < 0){
-                    return $items['info'];
-                }
-                $items['info']['role'] =  self::find($params['id'])->roles()->where('id',$roleid)->first()->toArray();
-                return $items['info'];
+                // $items['info']['user'] =  self::find($params['id'])->where('id',$params['id'])->first()->toArray();
+                // $roleid = $items['info']['user']['roleid'];
+                // if($roleid < 0){
+                //     return $items['info'];
+                // }
+                // $items['info']['role'] =  self::find($params['id'])->roles()->where('id',$roleid)->first()->toArray();
+                // return $items['info'];
+                return $this->where('id',$params['id'])->first();
             }
 
             if($options['task'] == 'get-active-item'){
                 return $this->select('id','username')->where('status',1)->pluck('username', 'id')->toArray();
+            }
+
+            if($options['task'] == 'get-users-in-role'){
+                return $this->select('id','username','fullname','status')
+                            ->where([
+                                ['status',1],
+                                ['roleid',$params['id']]
+                            ])
+                            ->paginate(10);
             }
             // return self::find($params['id'])->roles()->first();
         }

@@ -101,6 +101,10 @@ class Role_permission extends Authenticatable
         if($options['task'] == 'delete-item-by-role-id'){
             $this->where('role_id',$params['id'])->delete();
         }
+
+        if($options['task'] == 'delete-action-item-by-permission-id'){
+            $this->where('permission_id',$params['id'])->delete();
+        }
     }
 
     public function roles()

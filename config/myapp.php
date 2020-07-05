@@ -6,15 +6,15 @@ return [
     ],
     'template' => [
         'button' => [
-            'role'   => ['form'],
-            'user'   => ['form','delete','view'],
+            'role'   => ['form','delete','detail'],
+            'user'   => ['form','delete','detail'],
             'permission'   => ['form','delete'],
             'unknow' => ['form','delete'],
         ],
         'buttonType' => [
             'form'   => [ 'class' => 'btn-success' , 'icon' => 'fa fa-pencil-alt', 'title' => 'Chỉnh sửa'],
             'delete' => [ 'class' => 'btn-primary', 'icon'  => 'fa fa-trash' , 'title' => 'Xóa'],
-            'view'   => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
+            'detail'   => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
             'cog'    => [ 'class' => ' btn-warning' , 'icon'=> 'fa fa-user-cog'   , 'title' => 'Cài đặt'],
             'adddetail' => [ 'class' => ' btn-default' , 'icon' => 'fa fa-plus'   , 'title' => 'Thêm'],
             'unknow' => [ 'class' => ' btn-danger' , 'icon' => 'fa fa-eye'   , 'title' => 'Xem'],
@@ -39,6 +39,7 @@ return [
             'role'   => ['all','id','name'],
             'user'   => ['all','fullname','id','username'],
             'permission'   => ['all','id','name'],
+            'questionsuite'   => ['all','id','name'],
             'unknow' => ['id','name','role'],
         ]
     ],
@@ -52,8 +53,19 @@ return [
         'role' => 'Quản lý chức vụ',
         'permission' => 'Quản lý phân quyền',
         'post' => 'Quản lý bài viết',
-        'test' => 'Quản lý bộ đề',
+        'questionSuite' => 'Quản lý bộ đề',
         'account' => 'Quản lý tài khoản người dùng',
         'system' => 'Quản lý hệ thống'
     ],
+    'actionType' => [
+        'view' => 'view',
+        'add' => 'add',
+        'form' => 'form',
+        'delete' => 'delete',
+    ],
+    'level' => [
+        'easy' => 'Dễ',
+        'normal' => 'Thường',
+        'hard' => 'Khó',
+    ]
 ];

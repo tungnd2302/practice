@@ -1,5 +1,6 @@
 <?php
     namespace App\Helpers;
+    use Illuminate\Support\Facades\Auth;
 
     class Practice{
         public static function ShowStatusButton($controllerName,$status,$id){
@@ -16,6 +17,34 @@
             $buttonActionTemplates = config('myapp.template.button');
             $myButton              = (array_key_exists($controllerName,$buttonActionTemplates)) ? $buttonActionTemplates[$controllerName] : $buttonActionTemplates['unknow'];
             $buttonTypeTemplate    = config('myapp.template.buttonType');
+            $actionTypes           = config('myapp.actionType');
+            $buttonOnlyAcceptedByPermission = [];
+            $permissions = Auth()->user()->roles->permission;
+
+            if(count($permissions) > 0){
+                foreach($permissions as $per){
+                    if($per['scope'] == $controllerName){
+                        // echo '<pre>';
+                        // print_r($per->Permission_detail->toArray());
+                        // echo '</pre>';
+                        $permissionActions = $per->Permission_detail->toArray();
+                        foreach($permissionActions as $item){
+                            if(!in_array($item['action'],$buttonOnlyAcceptedByPermission)){
+                                array_push($buttonOnlyAcceptedByPermission,$item['action']);
+                            }
+                        }
+                        foreach($buttonOnlyAcceptedByPermission as $btnNotAccepted){
+                            unset($actionTypes[$btnNotAccepted]);
+                        }
+                        $myButton = array_diff($myButton,$actionTypes);
+                    }
+                }
+            }else{
+                // return 1;
+            }
+
+
+
             foreach($myButton as $key => $value){
                 $actionButton = (array_key_exists($value,$buttonTypeTemplate)) ? $buttonTypeTemplate[$value] : $buttonTypeTemplate['unknow'];
                 $link   = route($controllerName . $value , ['id' => $id]);

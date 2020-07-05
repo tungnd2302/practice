@@ -40,21 +40,26 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{ route('role') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Chức vụ</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('permission') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Quyền</p>
-                    </a>
-                  </li>
+                    @can('index', App\Models\Backend\Role::class)
+                        <li class="nav-item">
+                            <a href="{{ route('role') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Chức vụ</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('index', App\Models\Backend\Permission::class)
+                    <li class="nav-item">
+                        <a href="{{ route('permission') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Quyền</p>
+                        </a>
+                    </li>
+                    @endcan
                 </ul>
-              </li>
+            </li>
 
+            @can('index', App\Models\Backend\User::class)
             <li class="nav-item">
                 <a href="{{ route('user') }}" class="nav-link">
                     <i class="nav-icon fa fa-tachometer-alt"></i>
@@ -63,15 +68,19 @@
                     </p>
                 </a>
             </li>
+            @endcan
+
+            @can('index', App\Models\Backend\Question_suite::class)
             <li class="nav-item">
-                <a href="pages/gallery.html" class="nav-link">
+                <a href="{{ route('questionsuite') }}" class="nav-link">
                     <i class="nav-icon fa fa-tachometer-alt"></i>
                     <p>
                         Danh sách bộ đề
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
+            @endcan
+             {{--<li class="nav-item">
                 <a href="pages/gallery.html" class="nav-link">
                     <i class="nav-icon fa fa-tachometer-alt"></i>
                     <p>
@@ -94,7 +103,7 @@
                         Tùy chọn hệ thống
                     </p>
                 </a>
-            </li>
+            </li> --}}
             </li>
         </ul>
       </nav>

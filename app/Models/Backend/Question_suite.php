@@ -6,20 +6,20 @@
 /**
 	 * summary
 	 */
-	class Role extends Model
+	class Question_suite extends Model
 	{
 	    public $timestamps = false;
-	    public $table 	   = 'role';
+	    public $table 	   = 'question_suite';
         protected $fillable = [
             'name', 'status', 'createdby','created_at','update_at'
         ];
         private $fieldSearchAccepted = ['id','name'];
-        private $fieldSaveNotAccepted = ['_token','permission_id'];
+        private $fieldSaveNotAccepted = ['_token'];
 
 	    public function getAllItems($params = null, $options = null)
 	    {
             if($options['task'] == 'get-all-items'){
-                $query = $this->select('name','id','status','created');
+                $query = $this->select('name','id','status','created','level');
                 if($params['status'] !== null){
                     $query->where('status',$params['status']);
                 }

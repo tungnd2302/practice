@@ -1,9 +1,11 @@
 <div class="card-header">
     <h3 class="card-title">{{ $title }}</h3>
     @if($form == true)
-        <a href="{{ route($controllerName . 'form') }}">
-            <span class="fa fa-plus-circle ml-2"></span>
-        </a>
+        @can('add', $model)
+            <a href="{{ route($controllerName . 'form') }}">
+                <span class="fa fa-plus-circle ml-2"></span>
+            </a>
+        @endcan
     @endif
   <div class="card-tools">
     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">

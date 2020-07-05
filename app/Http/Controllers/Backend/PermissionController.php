@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller as BaseController;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PermissionRequest;
@@ -10,6 +10,7 @@ use App\Models\Backend\Permission as AppModel;
 use App\Models\Backend\User;
 use App\Models\Backend\Role;
 use App\Models\Backend\Permission_detail as PermissionDetail;
+use App\Models\Backend\Role_permission as RolePermission;
 
 
 class PermissionController extends BaseController
@@ -28,8 +29,9 @@ class PermissionController extends BaseController
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request,AppModel $permission)
     {
+        $this->authorize('index', $permission);
         $params['status'] = $request->status;
         $params['fieldSearch'] = $request->fieldSearch;
         $params['contentSearch'] =  $request->contentSearch;
@@ -47,7 +49,8 @@ class PermissionController extends BaseController
         ]);
     }
 
-    public function form(Request $request){
+    public function form(Request $request,AppModel $permission){
+
         $items = [];
         $userModel = new User();
         $users = $userModel->getItem(null,['task' => 'get-active-item']);
@@ -55,10 +58,14 @@ class PermissionController extends BaseController
         $roles = $roleModel->getItem(null,['task' => 'get-active-item']);
         $actionsModel = [];
         if($request->id){
+            $this->authorize('form', $permission);
             $params['id'] = $request->id;
+            // die();
             $items = $this->model->getItem($params,['task' => 'get-item']);
             $model = new PermissionDetail();
             $actionsModel = $model->getItem($params,['task' => 'get-action-item']);
+        }else{
+            $this->authorize('add', $permission);
         }
         return view($this->pathView . '.form',[
             'items' => $items,
@@ -78,10 +85,12 @@ class PermissionController extends BaseController
 
             $model = new PermissionDetail();
             $model->deteleItem($params,['task' => 'delete-action-item-by-id-permission']);
-            foreach($fields['action'] as $action){
-                $params['action'] = $action;
-                $params['id_permission'] = $params['id'];
-                $model->saveItem($params,['task' => 'save-item']);
+            if(isset($fields['action'])){
+                foreach($fields['action'] as $action){
+                    $params['action'] = $action;
+                    $params['id_permission'] = $params['id'];
+                    $model->saveItem($params,['task' => 'save-item']);
+                }
             }
 
             $this->model->saveItem($params,['task' => 'update-item']);
@@ -98,10 +107,12 @@ class PermissionController extends BaseController
             $id_permission = $this->model->saveItem($params,['task' => 'save-item']);
 
             $model = new PermissionDetail();
-            foreach($fields['action'] as $action){
-                $params['action'] = $action;
-                $params['id_permission'] = $id_permission;
-                $model->saveItem($params,['task' => 'save-item']);
+            if(isset($fields['action'])){
+                foreach($fields['action'] as $action){
+                    $params['action'] = $action;
+                    $params['id_permission'] = $id_permission;
+                    $model->saveItem($params,['task' => 'save-item']);
+                }
             }
             $notify = "Tạo ". $this->nameInVN." thành công!";
 
@@ -109,7 +120,8 @@ class PermissionController extends BaseController
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
 
-    public function changestatus(Request $request){
+    public function changestatus(Request $request,AppModel $permission){
+        $this->authorize('form', $permission);
         $status = $request->status;
         $id = $request->id;
         $params['id']     = $id;
@@ -120,12 +132,18 @@ class PermissionController extends BaseController
         return redirect()->back()->with("practice_notify", $notify);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request,AppModel $permission){
+        $this->authorize('delete', $permission);
         $id = $request->id;
         $params['id']     = $id;
         $items = $this->model->deteleItem($params,['task' => 'delete-item']);
-        $model = new PermissionDetail();
-        $model->deteleItem($params,['task' => 'delete-action-item-by-id-permission']);
+        // Xóa ở permission_detail
+        $modelDetail = new PermissionDetail();
+        $modelDetail->deteleItem($params,['task' => 'delete-action-item-by-id-permission']);
+        // Xóa ở role_permission
+        $modelDetail = new RolePermission();
+        $modelDetail->deteleItem($params,['task' => 'delete-action-item-by-permission-id']);
+
         $notify = "Xóa ". $this->nameInVN." thành công!";
         return redirect()->route($this->controllerName)->with("practice_notify", $notify);
     }
